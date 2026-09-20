@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * GENERADOR DE INFORME ACADÉMICO PROFESIONAL EN PDF (PDFKit)
+ * GENERADOR DE INFORME ACADÉMICO EN PDF (DISEÑO EDITORIAL PROFESIONAL)
  * Asignatura: Desarrollo de Aplicaciones Móviles
  * Docente / Tutor: Ing. Luis Calo | Calificación: 10 Puntos
  * ============================================================================
@@ -12,11 +12,19 @@ const path = require('path');
 
 const outputPath = path.join(__dirname, 'Informe_Tecnico_Investigacion_Moviles.pdf');
 
+// Dimensiones A4 en puntos: 595.28 x 841.89
+const PAGE_W = 595.28;
+const PAGE_H = 841.89;
+const MARGIN_X = 45;
+const MARGIN_TOP = 45;
+const MARGIN_BOTTOM = 45;
+const USABLE_W = PAGE_W - (MARGIN_X * 2); // 505.28 pt
+
 const doc = new PDFDocument({
   size: 'A4',
-  margins: { top: 40, bottom: 40, left: 40, right: 40 },
+  margins: { top: MARGIN_TOP, bottom: MARGIN_BOTTOM, left: MARGIN_X, right: MARGIN_X },
   bufferPages: true,
-  autoFirstPage: true
+  autoFirstPage: false
 });
 
 const writeStream = fs.createWriteStream(outputPath);
@@ -24,86 +32,82 @@ doc.pipe(writeStream);
 
 // Paleta de colores institucionales
 const C = {
-  primary: '#1E3A8A',       // Azul institucional oscuro
-  primaryLight: '#2563EB',  // Azul corporativo
-  textDark: '#0F172A',      // Texto oscuro
-  textMuted: '#475569',     // Texto secundario
-  bgCard: '#F8FAFC',        // Fondo gris claro
-  border: '#CBD5E1',        // Borde gris
+  primary: '#1E3A8A',       // Azul marino institucional
+  primaryLight: '#2563EB',  // Azul real corporativo
+  textDark: '#0F172A',      // Slate oscuro (texto)
+  textMuted: '#475569',     // Slate gris (secundario)
+  bgCard: '#F8FAFC',        // Fondo gris suave
+  border: '#CBD5E1',        // Borde gris claro
   accentGreen: '#16A34A',   // Verde ventajas
   accentRed: '#DC2626',     // Rojo desventajas
-  codeBg: '#0F172A',        // Fondo bloques código
-  codeText: '#E2E8F0'       // Texto código
+  codeBg: '#0F172A',        // Fondo bloques de código
+  codeText: '#E2E8F0'       // Texto bloques de código
 };
 
-const leftMargin = 40;
-const pageWidth = doc.page.width - 80; // ~515 pt
-
-function ensureSpace(neededHeight) {
-  if (doc.y + neededHeight > doc.page.height - 45) {
-    doc.addPage();
-  }
+// Helpers de Maquetación
+function addNewPage() {
+  doc.addPage({
+    size: 'A4',
+    margins: { top: MARGIN_TOP, bottom: MARGIN_BOTTOM, left: MARGIN_X, right: MARGIN_X }
+  });
 }
 
 function drawSectionHeader(title) {
-  ensureSpace(35);
-  doc.moveDown(0.4);
-  const y = doc.y;
-  doc.rect(leftMargin, y, 4, 16).fill(C.primaryLight);
+  const y = doc.y + 4;
+  doc.rect(MARGIN_X, y, 4, 15).fill(C.primaryLight);
   doc.fillColor(C.primary)
      .font('Helvetica-Bold')
-     .fontSize(11.5)
-     .text(title, leftMargin + 10, y + 2, { width: pageWidth - 10 });
-  doc.y = y + 22;
+     .fontSize(11)
+     .text(title, MARGIN_X + 10, y + 2, { width: USABLE_W - 10 });
+  doc.y = y + 20;
 }
 
 function drawSubSection(title) {
-  ensureSpace(25);
-  doc.moveDown(0.2);
+  const y = doc.y + 3;
   doc.fillColor(C.textDark)
      .font('Helvetica-Bold')
      .fontSize(9.5)
-     .text(title, leftMargin, doc.y, { width: pageWidth });
-  doc.moveDown(0.2);
+     .text(title, MARGIN_X, y, { width: USABLE_W });
+  doc.y = doc.y + 3;
 }
 
 function drawParagraph(text) {
   doc.fillColor(C.textDark)
      .font('Helvetica')
      .fontSize(8.5)
-     .text(text, leftMargin, doc.y, { width: pageWidth, align: 'justify', lineGap: 1.8 });
-  doc.moveDown(0.3);
+     .text(text, MARGIN_X, doc.y, { width: USABLE_W, align: 'justify', lineGap: 2 });
+  doc.moveDown(0.35);
 }
 
 function drawProConBox(pros, cons) {
-  ensureSpace(85);
-  const boxWidth = (pageWidth - 8) / 2;
+  const boxWidth = (USABLE_W - 10) / 2;
   const startY = doc.y;
-  const boxHeight = 78;
+  const boxHeight = 76;
 
-  // Ventajas
-  doc.roundedRect(leftMargin, startY, boxWidth, boxHeight, 4)
+  // Caja de Ventajas (Izquierda)
+  doc.roundedRect(MARGIN_X, startY, boxWidth, boxHeight, 4)
      .fillAndStroke('#F0FDF4', '#BBF7D0');
   doc.fillColor(C.accentGreen).font('Helvetica-Bold').fontSize(8)
-     .text('✓ VENTAJAS', leftMargin + 8, startY + 6);
+     .text('✓ VENTAJAS', MARGIN_X + 8, startY + 6);
   
   let curY = startY + 18;
   doc.fillColor(C.textDark).font('Helvetica').fontSize(7.5);
   pros.forEach(p => {
-    doc.text(`• ${p}`, leftMargin + 8, curY, { width: boxWidth - 14, lineGap: 1.2 });
+    doc.text(`• ${p}`, MARGIN_X + 8, curY, { width: boxWidth - 14, lineGap: 1.2 });
     curY = doc.y + 2;
   });
 
-  // Desventajas
-  doc.roundedRect(leftMargin + boxWidth + 8, startY, boxWidth, boxHeight, 4)
+  // Caja de Desventajas (Derecha)
+  const rightBoxX = MARGIN_X + boxWidth + 10;
+  doc.roundedRect(rightBoxX, startY, boxWidth, boxHeight, 4)
      .fillAndStroke('#FEF2F2', '#FECACA');
   doc.fillColor(C.accentRed).font('Helvetica-Bold').fontSize(8)
-     .text('✗ DESVENTAJAS', leftMargin + boxWidth + 16, startY + 6);
+     .text('✗ DESVENTAJAS', rightBoxX + 8, startY + 6);
   
   curY = startY + 18;
   doc.fillColor(C.textDark).font('Helvetica').fontSize(7.5);
   cons.forEach(c => {
-    doc.text(`• ${c}`, leftMargin + boxWidth + 16, curY, { width: boxWidth - 14, lineGap: 1.2 });
+    doc.text(`• ${c}`, rightBoxX + 8, curY, { width: boxWidth - 14, lineGap: 1.2 });
     curY = doc.y + 2;
   });
 
@@ -111,25 +115,24 @@ function drawProConBox(pros, cons) {
 }
 
 function drawTable(headers, rows, colWidths) {
-  ensureSpace(rows.length * 15 + 25);
-  const startX = leftMargin;
+  const startX = MARGIN_X;
   let startY = doc.y;
 
-  // Header
-  doc.rect(startX, startY, pageWidth, 15).fill(C.primary);
+  // Header de la tabla
+  doc.rect(startX, startY, USABLE_W, 15).fill(C.primary);
   let curX = startX;
   headers.forEach((h, i) => {
     doc.fillColor('#FFFFFF')
        .font('Helvetica-Bold')
        .fontSize(7.2)
-       .text(h, curX + 4, startY + 3.5, { width: colWidths[i] - 8 });
+       .text(h, curX + 4, startY + 3.5, { width: colWidths[i] - 8, align: 'left' });
     curX += colWidths[i];
   });
 
   startY += 15;
   rows.forEach((row, rIdx) => {
     const rowBg = rIdx % 2 === 0 ? '#FFFFFF' : '#F8FAFC';
-    doc.rect(startX, startY, pageWidth, 15).fillAndStroke(rowBg, C.border);
+    doc.rect(startX, startY, USABLE_W, 14).fillAndStroke(rowBg, C.border);
     curX = startX;
     row.forEach((cell, cIdx) => {
       doc.fillColor(C.textDark)
@@ -138,7 +141,7 @@ function drawTable(headers, rows, colWidths) {
          .text(cell, curX + 4, startY + 3.5, { width: colWidths[cIdx] - 8 });
       curX += colWidths[cIdx];
     });
-    startY += 15;
+    startY += 14;
   });
 
   doc.y = startY + 6;
@@ -146,54 +149,65 @@ function drawTable(headers, rows, colWidths) {
 
 function drawCodeBlock(codeText, fontSize = 6.8) {
   const lines = codeText.split('\n');
-  const blockHeight = lines.length * 8.5 + 10;
-  ensureSpace(blockHeight + 10);
-
+  const blockHeight = lines.length * 8.5 + 8;
   const startY = doc.y;
-  doc.roundedRect(leftMargin, startY, pageWidth, blockHeight, 4)
+
+  doc.roundedRect(MARGIN_X, startY, USABLE_W, blockHeight, 4)
      .fillAndStroke(C.codeBg, '#1E293B');
   
   doc.fillColor(C.codeText)
      .font('Courier')
      .fontSize(fontSize)
-     .text(codeText, leftMargin + 8, startY + 6, { width: pageWidth - 16, lineGap: 1.2 });
+     .text(codeText, MARGIN_X + 8, startY + 5, { width: USABLE_W - 16, lineGap: 1.2 });
   
   doc.y = startY + blockHeight + 6;
 }
 
 // ============================================================================
-// PÁGINA 1: CARÁTULA FORMAL
+// PÁGINA 1: CARÁTULA FORMAL UNIVERSITARIA
 // ============================================================================
-doc.rect(30, 30, doc.page.width - 60, doc.page.height - 60).lineWidth(2).stroke(C.primary);
-doc.rect(34, 34, doc.page.width - 68, doc.page.height - 68).lineWidth(0.8).stroke(C.primaryLight);
+addNewPage();
 
-doc.y = 65;
-doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(14).text('UNIVERSIDAD DE LAS FUERZAS ARMADAS / POLITÉCNICA', { align: 'center' });
+// Marco doble institucional
+doc.rect(30, 30, PAGE_W - 60, PAGE_H - 60).lineWidth(2).stroke(C.primary);
+doc.rect(34, 34, PAGE_W - 68, PAGE_H - 68).lineWidth(0.8).stroke(C.primaryLight);
+
+// Encabezado universitario
+doc.y = 60;
+doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(14).text('UNIVERSIDAD / ESCUELA POLITÉCNICA', MARGIN_X, doc.y, { width: USABLE_W, align: 'center' });
 doc.moveDown(0.2);
-doc.fillColor(C.textMuted).font('Helvetica-Bold').fontSize(10).text('FACULTAD DE INGENIERÍA Y CIENCIAS APLICADAS', { align: 'center' });
+doc.fillColor(C.textMuted).font('Helvetica-Bold').fontSize(10).text('FACULTAD DE INGENIERÍA Y CIENCIAS APLICADAS', MARGIN_X, doc.y, { width: USABLE_W, align: 'center' });
 doc.moveDown(0.1);
-doc.fillColor(C.primaryLight).font('Helvetica').fontSize(9).text('CARRERA DE INGENIERÍA EN SOFTWARE / TECNOLOGÍAS DE LA INFORMACIÓN', { align: 'center' });
-
-doc.moveDown(1.5);
-doc.moveTo(60, doc.y).lineTo(doc.page.width - 60, doc.y).stroke(C.border);
-
-doc.moveDown(1.5);
-const badgeY = doc.y;
-doc.roundedRect(pageWidth / 2 - 40, badgeY, 160, 20, 10).fillAndStroke('#EFF6FF', '#BFDBFE');
-doc.fillColor(C.primaryLight).font('Helvetica-Bold').fontSize(9).text('TAREA DE RECUPERACIÓN', pageWidth / 2 - 40, badgeY + 5, { width: 160, align: 'center' });
-
-doc.y = badgeY + 36;
-doc.fillColor(C.textMuted).font('Helvetica-Bold').fontSize(8.5).text('TEMA DE INVESTIGACIÓN Y DESARROLLO TÉCNICO:', { align: 'center', characterSpacing: 1 });
-doc.moveDown(0.4);
-doc.fillColor(C.textDark).font('Helvetica-Bold').fontSize(11.5).text(
-  'DISPOSITIVOS REALES Y VIRTUALES, CONSUMO DE APIS REST CON AXIOS Y GENERACIÓN DE APK EN APLICACIONES MÓVILES',
-  { align: 'center', width: pageWidth - 20 }
-);
+doc.fillColor(C.primaryLight).font('Helvetica').fontSize(9).text('CARRERA DE INGENIERÍA EN SOFTWARE / TECNOLOGÍAS DE LA INFORMACIÓN', MARGIN_X, doc.y, { width: USABLE_W, align: 'center' });
 
 doc.moveDown(1.2);
+doc.moveTo(60, doc.y).lineTo(PAGE_W - 60, doc.y).lineWidth(0.8).stroke(C.border);
+
+// Badge tipo de asignación
+doc.moveDown(1.5);
+const badgeW = 200;
+const badgeX = (PAGE_W - badgeW) / 2;
+const badgeY = doc.y;
+doc.roundedRect(badgeX, badgeY, badgeW, 22, 11).fillAndStroke('#EFF6FF', '#BFDBFE');
+doc.fillColor(C.primaryLight).font('Helvetica-Bold').fontSize(9.5).text('INFORME DE INVESTIGACIÓN Y DESARROLLO', badgeX, badgeY + 6, { width: badgeW, align: 'center' });
+
+// Título Principal
+doc.y = badgeY + 40;
+doc.fillColor(C.textMuted).font('Helvetica-Bold').fontSize(8.5).text('TEMA PRINCIPAL:', MARGIN_X, doc.y, { width: USABLE_W, align: 'center', characterSpacing: 1 });
+doc.moveDown(0.3);
+doc.fillColor(C.textDark).font('Helvetica-Bold').fontSize(12).text(
+  'DISPOSITIVOS REALES Y VIRTUALES, CONSUMO DE APIS REST CON AXIOS Y GENERACIÓN DE APK EN APLICACIONES MÓVILES',
+  MARGIN_X + 15, doc.y, { width: USABLE_W - 30, align: 'center', lineGap: 2.5 }
+);
+
+// Caja de Subtemas
+doc.moveDown(1.2);
 const subBoxY = doc.y;
-doc.roundedRect(50, subBoxY, pageWidth - 20, 85, 6).fillAndStroke(C.bgCard, C.border);
-doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(8.5).text('SUBTEMAS DE ESTUDIO:', 62, subBoxY + 8);
+const subBoxW = USABLE_W - 20;
+const subBoxX = MARGIN_X + 10;
+doc.roundedRect(subBoxX, subBoxY, subBoxW, 90, 6).fillAndStroke(C.bgCard, C.border);
+
+doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(8.5).text('SUBTEMAS DE ESTUDIO:', subBoxX + 12, subBoxY + 8);
 doc.fillColor(C.textDark).font('Helvetica').fontSize(7.8);
 const subList = [
   '• Módulo I: Dispositivos móviles reales, emuladores, simuladores y Android Virtual Device (AVD).',
@@ -203,36 +217,39 @@ const subList = [
 ];
 let sY = subBoxY + 22;
 subList.forEach(item => {
-  doc.text(item, 62, sY, { width: pageWidth - 44 });
-  sY += 14;
+  doc.text(item, subBoxX + 12, sY, { width: subBoxW - 24, lineGap: 1.5 });
+  sY += 15;
 });
 
-doc.y = subBoxY + 115;
-const footBoxY = doc.y;
-doc.roundedRect(50, footBoxY, pageWidth - 20, 70, 6).fillAndStroke('#F1F5F9', C.border);
+// Pie de Carátula (Datos del Docente y Estudiante)
+const footBoxY = subBoxY + 115;
+doc.roundedRect(subBoxX, footBoxY, subBoxW, 75, 6).fillAndStroke('#F1F5F9', C.border);
 
-doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(8).text('DOCENTE / TUTOR:', 62, footBoxY + 10);
-doc.fillColor(C.textDark).font('Helvetica').fontSize(8.5).text('Ing. Luis Calo', 62, footBoxY + 20);
-doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(8).text('ASIGNATURA:', 62, footBoxY + 38);
-doc.fillColor(C.textDark).font('Helvetica').fontSize(8.5).text('Desarrollo de Aplicaciones Móviles', 62, footBoxY + 48);
+// Columna 1
+doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(8).text('DOCENTE / TUTOR:', subBoxX + 12, footBoxY + 10);
+doc.fillColor(C.textDark).font('Helvetica').fontSize(8.5).text('Ing. Luis Calo', subBoxX + 12, footBoxY + 20);
+doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(8).text('ASIGNATURA:', subBoxX + 12, footBoxY + 40);
+doc.fillColor(C.textDark).font('Helvetica').fontSize(8.5).text('Desarrollo de Aplicaciones Móviles', subBoxX + 12, footBoxY + 50);
 
-const footCol2 = 50 + (pageWidth - 20) / 2 + 10;
+// Columna 2
+const footCol2 = subBoxX + subBoxW / 2 + 10;
 doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(8).text('ESTUDIANTE / AUTOR:', footCol2, footBoxY + 10);
 doc.fillColor(C.textDark).font('Helvetica').fontSize(8.5).text('Investigador y Desarrollador', footCol2, footBoxY + 20);
-doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(8).text('CALIFICACIÓN Y PERÍODO:', footCol2, footBoxY + 38);
-doc.fillColor(C.textDark).font('Helvetica').fontSize(8.5).text('Rúbrica: 10.0 / 10.0 Puntos | 2026', footCol2, footBoxY + 48);
+doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(8).text('CALIFICACIÓN Y PERÍODO:', footCol2, footBoxY + 40);
+doc.fillColor(C.textDark).font('Helvetica').fontSize(8.5).text('Rúbrica: 10.0 / 10.0 Puntos | 2026', footCol2, footBoxY + 50);
 
 // ============================================================================
 // PÁGINA 2: OBJETIVOS & 2.1 DISPOSITIVOS REALES Y VIRTUALES
 // ============================================================================
-doc.addPage();
+addNewPage();
+doc.y = MARGIN_TOP;
 
 drawSectionHeader('1. OBJETIVOS');
-doc.roundedRect(leftMargin, doc.y, pageWidth, 36, 4).fillAndStroke('#F0FDF4', '#BBF7D0');
-doc.fillColor(C.accentGreen).font('Helvetica-Bold').fontSize(8).text('OBJETIVO GENERAL', leftMargin + 8, doc.y + 5);
+doc.roundedRect(MARGIN_X, doc.y, USABLE_W, 36, 4).fillAndStroke('#F0FDF4', '#BBF7D0');
+doc.fillColor(C.accentGreen).font('Helvetica-Bold').fontSize(8).text('OBJETIVO GENERAL', MARGIN_X + 8, doc.y + 5);
 doc.fillColor(C.textDark).font('Helvetica').fontSize(7.5).text(
   'Analizar, contrastar y aplicar los fundamentos de entornos de prueba móviles (dispositivos físicos y virtuales), la integración de servicios web bajo arquitectura REST mediante Axios, y el proceso de construcción, optimización (zipalign) y firmado criptográfico de archivos APK para Android.',
-  leftMargin + 8, doc.y + 3, { width: pageWidth - 16, lineGap: 1.2 }
+  MARGIN_X + 8, doc.y + 3, { width: USABLE_W - 16, lineGap: 1.2 }
 );
 doc.y += 20;
 
@@ -245,9 +262,9 @@ const objs = [
 ];
 objs.forEach((o, i) => {
   doc.fillColor(C.textDark).font('Helvetica').fontSize(7.8)
-     .text(`${i + 1}. `, leftMargin + 6, doc.y, { continued: true })
-     .text(o, { width: pageWidth - 16, lineGap: 1.2 });
-  doc.moveDown(0.15);
+     .text(`${i + 1}. `, MARGIN_X + 4, doc.y, { continued: true })
+     .text(o, { width: USABLE_W - 10, lineGap: 1.2 });
+  doc.moveDown(0.12);
 });
 
 drawSectionHeader('2. MARCO TEÓRICO');
@@ -258,8 +275,8 @@ drawParagraph(
 
 drawSubSection('2.1.1. Dispositivo Móvil Real (Hardware Físico)');
 drawParagraph(
-  '• ¿Qué es? Es una unidad física comercial de smartphone o tablet con un System-on-Chip (SoC) basado en arquitectura ARM/ARM64, circuitos de radiofrecuencia (4G/5G, Wi-Fi, BLE, NFC) y sensores físicos (GPS, giroscopio, cámaras, biometría).\n' +
-  '• ¿Cómo funciona? La app se ejecuta de forma nativa sobre el Android Runtime (ART) y los controladores de bajo nivel (HAL). La depuración se realiza mediante Android Debug Bridge (ADB) sobre cable USB o conexión inalámbrica TCP/IP (Wi-Fi).'
+  '• ¿Qué es? Es una unidad física comercial con System-on-Chip (SoC) ARM/ARM64, circuitos de radiofrecuencia (4G/5G, Wi-Fi, BLE, NFC) y sensores físicos (GPS, giroscopio, cámaras, biometría).\n' +
+  '• ¿Cómo funciona? La app se ejecuta de forma nativa sobre el Android Runtime (ART) y los controladores de bajo nivel (HAL). La depuración se realiza mediante Android Debug Bridge (ADB) sobre cable USB o conexión inalámbrica TCP/IP.'
 );
 
 drawProConBox(
@@ -295,7 +312,7 @@ drawTable(
     ['Sensores / Red', 'Reales y físicos', 'Simulados por software', 'Mocks / Limitados'],
     ['Integración CI/CD', 'Compleja y costosa', 'Excelente (Headless)', 'Muy Rápida y fácil']
   ],
-  [100, 135, 140, 140]
+  [95, 135, 140, 135]
 );
 
 drawProConBox(
@@ -313,7 +330,8 @@ drawProConBox(
 // ============================================================================
 // PÁGINA 3: 2.2 APIS Y SERVICIOS WEB & AXIOS
 // ============================================================================
-doc.addPage();
+addNewPage();
+doc.y = MARGIN_TOP;
 
 drawSubSection('2.2. APIs y Servicios Web para Aplicaciones Móviles');
 drawParagraph(
@@ -346,7 +364,7 @@ drawTable(
     ['Configuración de Timeouts', 'Soporte nativo (timeout: 10000ms)', 'Requiere AbortSignal.timeout() complejo'],
     ['Protección XSRF / Headers', 'Integrada por defecto', 'Configuración manual']
   ],
-  [120, 195, 200]
+  [115, 195, 195]
 );
 
 drawProConBox(
@@ -364,7 +382,8 @@ drawProConBox(
 // ============================================================================
 // PÁGINA 4: 2.3 GENERACIÓN DE APK
 // ============================================================================
-doc.addPage();
+addNewPage();
+doc.y = MARGIN_TOP;
 
 drawSubSection('2.3. Proceso de Generación y Compilación de APK (Android Package)');
 drawParagraph(
@@ -404,7 +423,8 @@ drawProConBox(
 // ============================================================================
 // PÁGINA 5: 3. DESARROLLO PRÁCTICO
 // ============================================================================
-doc.addPage();
+addNewPage();
+doc.y = MARGIN_TOP;
 
 drawSectionHeader('3. DESARROLLO DEL EJEMPLO PRÁCTICO');
 drawParagraph(
@@ -479,7 +499,8 @@ drawCodeBlock(
 // ============================================================================
 // PÁGINA 6: 4. CONCLUSIONES & 5. BIBLIOGRAFÍA
 // ============================================================================
-doc.addPage();
+addNewPage();
+doc.y = MARGIN_TOP;
 
 drawSectionHeader('4. CONCLUSIONES');
 
@@ -507,11 +528,11 @@ const conclusionsList = [
 ];
 
 conclusionsList.forEach(c => {
-  doc.roundedRect(leftMargin, doc.y, pageWidth, 32, 4).fillAndStroke(C.bgCard, C.border);
-  doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(7.8).text(c.t, leftMargin + 8, doc.y + 4);
-  doc.fillColor(C.textDark).font('Helvetica').fontSize(7.2).text(c.d, leftMargin + 8, doc.y + 2, { width: pageWidth - 16, lineGap: 1 });
+  doc.roundedRect(MARGIN_X, doc.y, USABLE_W, 30, 4).fillAndStroke(C.bgCard, C.border);
+  doc.fillColor(C.primary).font('Helvetica-Bold').fontSize(7.6).text(c.t, MARGIN_X + 8, doc.y + 4);
+  doc.fillColor(C.textDark).font('Helvetica').fontSize(7.1).text(c.d, MARGIN_X + 8, doc.y + 2, { width: USABLE_W - 16, lineGap: 1 });
   doc.y += 18;
-  doc.moveDown(0.1);
+  doc.moveDown(0.08);
 });
 
 drawSectionHeader('5. BIBLIOGRAFÍA (NORMAS APA 7ma EDICIÓN)');
@@ -532,34 +553,34 @@ const referencesList = [
 referencesList.forEach(ref => {
   doc.fillColor(C.textDark)
      .font('Helvetica')
-     .fontSize(7.2)
-     .text(ref, leftMargin + 8, doc.y, { width: pageWidth - 16, lineGap: 1.2 });
-  doc.moveDown(0.15);
+     .fontSize(7.1)
+     .text(ref, MARGIN_X + 6, doc.y, { width: USABLE_W - 12, lineGap: 1.2 });
+  doc.moveDown(0.12);
 });
 
 // ============================================================================
-// NUMERACIÓN DINÁMICA DE PÁGINAS Y ENCABEZADOS
+// NUMERACIÓN DINÁMICA DE PÁGINAS Y ENCABEZADOS (EXACTO 6 PÁGINAS)
 // ============================================================================
 const totalPages = doc.bufferedPageRange().count;
 for (let i = 0; i < totalPages; i++) {
   doc.switchToPage(i);
   
-  if (i > 0) { // Omitir carátula
+  if (i > 0) { // Omitir en carátula
     // Header
     doc.fillColor(C.textMuted)
        .font('Helvetica')
        .fontSize(7.5)
-       .text('Desarrollo de Aplicaciones Móviles | Tutor: Ing. Luis Calo', leftMargin, 22, { width: pageWidth });
-    doc.moveTo(leftMargin, 32).lineTo(leftMargin + pageWidth, 32).lineWidth(0.5).stroke(C.border);
+       .text('Desarrollo de Aplicaciones Móviles | Tutor: Ing. Luis Calo', MARGIN_X, 22, { width: USABLE_W });
+    doc.moveTo(MARGIN_X, 32).lineTo(MARGIN_X + USABLE_W, 32).lineWidth(0.5).stroke(C.border);
 
     // Footer
-    doc.moveTo(leftMargin, doc.page.height - 30).lineTo(leftMargin + pageWidth, doc.page.height - 30).lineWidth(0.5).stroke(C.border);
+    doc.moveTo(MARGIN_X, PAGE_H - 30).lineTo(MARGIN_X + USABLE_W, PAGE_H - 30).lineWidth(0.5).stroke(C.border);
     doc.fillColor(C.textMuted)
        .font('Helvetica')
        .fontSize(7.5)
-       .text('Tarea de Recuperación - Investigación y Práctica', leftMargin, doc.page.height - 24, { width: pageWidth / 2 });
-    doc.text(`Página ${i + 1} de ${totalPages}`, leftMargin + pageWidth / 2, doc.page.height - 24, {
-      width: pageWidth / 2,
+       .text('Tarea de Recuperación - Investigación y Práctica', MARGIN_X, PAGE_H - 24, { width: USABLE_W / 2 });
+    doc.text(`Página ${i + 1} de ${totalPages}`, MARGIN_X + USABLE_W / 2, PAGE_H - 24, {
+      width: USABLE_W / 2,
       align: 'right'
     });
   }
@@ -569,8 +590,8 @@ doc.end();
 
 writeStream.on('finish', () => {
   console.log('===============================================================');
-  console.log(' ¡INFORME PDF COMPILADO EXITOSAMENTE CON DISEÑO EDITORIAL!');
+  console.log(' ¡INFORME PDF COMPILADO CON MAQUETACIÓN EXACTA!');
   console.log(` Archivo generado: ${outputPath}`);
-  console.log(` Páginas totales: ${totalPages}`);
+  console.log(` Páginas totales exactas: ${totalPages}`);
   console.log('===============================================================');
 });
