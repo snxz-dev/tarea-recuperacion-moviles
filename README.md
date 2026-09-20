@@ -205,7 +205,7 @@ Para subir este proyecto a tu cuenta personal de GitHub:
 
 ```bash
 cd /home/snxz/Projects/tarea-recuperacion-moviles
-git remote add origin https://github.com/TU_USUARIO/TU_REPOSITORIO.git
+git remote add origin https://github.com/snxz-dev/tarea-recuperacion-moviles.git
 git branch -M main
 git push -u origin main
 ```
