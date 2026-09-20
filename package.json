@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npx --yes serve app-movil-ejemplo/src -l 3000",
     "test": "node app-movil-ejemplo/test/test-axios-services.js",
-    "generate-pdf": "node informe/generar_pdf_apa7.js",
+    "generate-pdf": "node informe/generar_pdf_apa7_extenso.js",
     "build-apk": "bash app-movil-ejemplo/build-tools/build-apk-workflow.sh"
   },
   "keywords": [
