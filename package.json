@@ -1,19 +1,28 @@
 {
   "name": "tarea-recuperacion-moviles",
   "version": "1.0.0",
-  "description": "",
+  "description": "Tarea de Recuperación: Dispositivos Móviles, APIs REST con Axios y Generación de APK - Tutor: Ing. Luis Calo",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx --yes serve app-movil-ejemplo/src -l 3000",
+    "test": "node app-movil-ejemplo/test/test-axios-services.js",
+    "generate-pdf": "node informe/generar_pdf_pdfkit.js",
+    "build-apk": "bash app-movil-ejemplo/build-tools/build-apk-workflow.sh"
   },
-  "keywords": [],
+  "keywords": [
+    "android",
+    "axios",
+    "rest-api",
+    "apk",
+    "avd"
+  ],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "puppeteer": "^25.11.0"
-  },
   "dependencies": {
-    "axios": "^1.20.0",
-    "pdfkit": "^0.20.2"
+    "axios": "^1.7.9",
+    "pdfkit": "^0.15.0"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.3.1"
   }
 }
