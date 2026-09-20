@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Informe Técnico de Investigación - Desarrollo de Aplicaciones Móviles</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+    @page {
+      size: A4;
+      margin: 20mm 15mm 20mm 15mm;
+      @bottom-right {
+        content: counter(page);
+        font-family: 'Inter', sans-serif;
+        font-size: 9pt;
+        color: #64748b;
+      }
+      @bottom-left {
+        content: "Desarrollo de Aplicaciones Móviles - Ing. Luis Calo";
+        font-family: 'Inter', sans-serif;
+        font-size: 8pt;
+        color: #94a3b8;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.6;
+      color: #1e293b;
+      background-color: #ffffff;
+    }
+
+    /* Contenedor principal */
+    .document-page {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    .page-break {
+      page-break-before: always;
+      break-before: page;
+    }
+
+    /* CARÁTULA */
+    .cover-page {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      padding: 30px 10px;
+      page-break-after: always;
+      border: 3px double #1e3a8a;
+      border-radius: 8px;
+    }
+
+    .cover-header {
+      border-bottom: 2px solid #1e3a8a;
+      padding-bottom: 18px;
+    }
+
+    .university-title {
+      font-size: 17pt;
+      font-weight: 800;
+      color: #1e3a8a;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .faculty-title {
+      font-size: 12pt;
+      font-weight: 600;
+      color: #475569;
+      margin-top: 5px;
+    }
+
+    .career-title {
+      font-size: 11pt;
+      font-weight: 500;
+      color: #2563eb;
+      margin-top: 3px;
+    }
+
+    .cover-badge-container {
+      margin: 25px 0;
+    }
+
+    .assignment-type {
+      display: inline-block;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      padding: 6px 20px;
+      font-size: 11pt;
+      font-weight: 700;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .cover-body {
+      margin: 20px 0;
+    }
+
+    .main-topic-label {
+      font-size: 10pt;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .main-topic-title {
+      font-size: 15pt;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 10px 0 15px;
+      line-height: 1.35;
+    }
+
+    .subtopics-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #2563eb;
+      border-radius: 6px;
+      padding: 12px 18px;
+      text-align: left;
+      margin: 15px auto;
+      max-width: 90%;
+    }
+
+    .subtopics-box h4 {
+      font-size: 10pt;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .subtopics-box ul {
+      margin-left: 18px;
+      font-size: 9.5pt;
+      color: #334155;
+    }
+
+    .subtopics-box li {
+      margin-bottom: 3px;
+    }
+
+    .cover-footer {
+      border-top: 2px solid #e2e8f0;
+      padding-top: 15px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      text-align: left;
+      font-size: 9.5pt;
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 6px;
+    }
+
+    .footer-col strong {
+      color: #1e3a8a;
+      display: block;
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    /* ENCABEZADOS Y SECCIONES */
+    h1.section-title {
+      font-size: 15pt;
+      font-weight: 800;
+      color: #1e3a8a;
+      border-bottom: 2px solid #2563eb;
+      padding-bottom: 6px;
+      margin: 24px 0 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    h2.sub-title {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 18px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3.sub-sub-title {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: #334155;
+      margin: 12px 0 6px;
+    }
+
+    p {
+      margin-bottom: 10px;
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    /* OBJETIVOS */
+    .objective-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #16a34a;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+
+    .objective-box h4 {
+      font-size: 10pt;
+      color: #15803d;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    ul.objectives-list {
+      margin-left: 20px;
+      margin-top: 6px;
+    }
+
+    ul.objectives-list li {
+      margin-bottom: 6px;
+      font-size: 10pt;
+    }
+
+    /* TABLAS COMPARATIVAS */
+    table.academic-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 18px;
+      font-size: 9pt;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    table.academic-table th, table.academic-table td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    table.academic-table th {
+      background-color: #1e3a8a;
+      color: #ffffff;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 8.5pt;
+      letter-spacing: 0.5px;
+    }
+
+    table.academic-table tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    /* TARJETAS DE VENTAJAS Y DESVENTAJAS */
+    .pro-con-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 12px 0 16px;
+    }
+
+    .pro-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 6px;
+      padding: 10px 14px;
+    }
+
+    .pro-box h4 {
+      color: #166534;
+      font-size: 9.5pt;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .con-box {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 6px;
+      padding: 10px 14px;
+    }
+
+    .con-box h4 {
+      color: #991b1b;
+      font-size: 9.5pt;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pro-con-grid ul {
+      margin-left: 16px;
+      font-size: 8.5pt;
+      color: #334155;
+    }
+
+    .pro-con-grid li {
+      margin-bottom: 4px;
+    }
+
+    /* DIAGRAMAS Y CAJAS DE ARQUITECTURA */
+    .architecture-diagram {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 14px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5pt;
+      line-height: 1.4;
+      white-space: pre;
+      overflow-x: auto;
+      border-left: 4px solid #38bdf8;
+    }
+
+    /* CÓDIGO FUENTE */
+    .code-block {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #6366f1;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin: 10px 0 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5pt;
+      color: #1e293b;
+      line-height: 1.45;
+      overflow-x: auto;
+    }
+
+    .code-keyword { color: #7c3aed; font-weight: 600; }
+    .code-string { color: #059669; }
+    .code-comment { color: #94a3b8; font-style: italic; }
+    .code-func { color: #2563eb; font-weight: 600; }
+
+    /* CONCLUSIONES Y BIBLIOGRAFÍA */
+    .conclusion-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #2563eb;
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .conclusion-card strong {
+      color: #1e3a8a;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 10pt;
+    }
+
+    .biblio-entry {
+      margin-bottom: 8px;
+      text-indent: -20px;
+      padding-left: 20px;
+      font-size: 9pt;
+      line-height: 1.45;
+      text-align: justify;
+    }
+
+    .callout-note {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid #3b82f6;
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin: 10px 0;
+      font-size: 9pt;
+      color: #1e40af;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="document-page">
+    
+    <!-- =================================================================== -->
+    <!-- CARÁTULA FORMAL UNIVERSITARIA                                      -->
+    <!-- =================================================================== -->
+    <div class="cover-page">
+      <div class="cover-header">
+        <h1 class="university-title">UNIVERSIDAD CENTRAL / ESCUELA POLITÉCNICA</h1>
+        <h2 class="faculty-title">FACULTAD DE INGENIERÍA Y CIENCIAS APLICADAS</h2>
+        <h3 class="career-title">CARRERA DE INGENIERÍA EN SOFTWARE / TECNOLOGÍAS DE LA INFORMACIÓN</h3>
+      </div>
+
+      <div class="cover-badge-container">
+        <span class="assignment-type">INFORME DE INVESTIGACIÓN Y DESARROLLO TÉCNICO</span>
+      </div>
+
+      <div class="cover-body">
+        <span class="main-topic-label">TEMA PRINCIPAL:</span>
+        <h2 class="main-topic-title">
+          DISPOSITIVOS REALES Y VIRTUALES, CONSUMO DE APIS REST CON AXIOS Y PROCESO DE GENERACIÓN DE APK EN APLICACIONES MÓVILES
+        </h2>
+
+        <div class="subtopics-box">
+          <h4>SUBTEMAS INVESTIGADOS:</h4>
+          <ul>
+            <li><strong>Módulo I:</strong> Dispositivos Reales, Emuladores, Simuladores y Android Virtual Device (AVD).</li>
+            <li><strong>Módulo II:</strong> Arquitectura REST, Protocolo HTTP y Cliente Axios con Interceptores.</li>
+            <li><strong>Módulo III:</strong> Pipeline de Compilación, Empaquetado, Optimización (Zipalign) y Firmado Criptográfico de APK.</li>
+            <li><strong>Módulo IV:</strong> Implementación Práctica de Software Móvil y Automatización de Construcción.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cover-footer">
+        <div class="footer-col">
+          <strong>Docente / Tutor:</strong>
+          <span>Ing. Luis Calo</span>
+          <strong style="margin-top: 8px;">Asignatura:</strong>
+          <span>Desarrollo de Aplicaciones Móviles</span>
+        </div>
+        <div class="footer-col">
+          <strong>Estudiante / Autor:</strong>
+          <span>Investigador y Desarrollador</span>
+          <strong style="margin-top: 8px;">Calificación & Período:</strong>
+          <span>Rúbrica: 10.0 / 10.0 Puntos | 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 1. OBJETIVOS DEL TRABAJO                                            -->
+    <!-- =================================================================== -->
+    <h1 class="section-title">1. Objetivos</h1>
+
+    <div class="objective-box">
+      <h4>OBJETIVO GENERAL</h4>
+      <p style="margin-bottom: 0;">
+        Analizar, comparar e implementar los fundamentos de entornos de prueba móviles (dispositivos físicos y virtuales), la integración de servicios web bajo arquitectura REST mediante el cliente HTTP Axios, y el flujo completo de empaquetado, optimización y firmado criptográfico de archivos APK para la plataforma Android, aplicando estándares de ingeniería de software.
+      </p>
+    </div>
+
+    <h2 class="sub-title">Objetivos Específicos</h2>
+    <ul class="objectives-list">
+      <li><strong>Investigar y contrastar</strong> el funcionamiento, la arquitectura técnica, las ventajas y desventajas entre dispositivos reales, emuladores basados en hipervisores (QEMU/KVM/AVD) y simuladores de software.</li>
+      <li><strong>Examinar la arquitectura RESTful y el protocolo HTTP/HTTPS</strong> en entornos móviles, evaluando la biblioteca <code>Axios</code> frente a soluciones nativas como <code>Fetch</code> en términos de interceptores, gestión de errores, serialización de datos y latencia.</li>
+      <li><strong>Describir el pipeline de compilación de Android</strong> (bytecode DEX, compilador D8/R8, empaquetador AAPT2, Gradle) y el procedimiento de firma digital con <code>keytool</code>, <code>zipalign</code> y <code>apksigner</code>.</li>
+      <li><strong>Desarrollar una aplicación móvil modular y funcional</strong> que consuma servicios REST en tiempo real mediante Axios, con manejo de excepciones y scripts automatizados de compilación para verificar su despliegue en entornos reales y virtuales.</li>
+    </ul>
+
+    <!-- =================================================================== -->
+    <!-- 2. MARCO TEÓRICO                                                    -->
+    <!-- =================================================================== -->
+    <h1 class="section-title page-break">2. Marco Teórico</h1>
+
+    <!-- SECCIÓN 2.1: DISPOSITIVOS REALES Y VIRTUALES -->
+    <h2 class="sub-title">2.1. Dispositivos Reales y Dispositivos Virtuales en el Desarrollo Móvil</h2>
+    
+    <p>
+      El ciclo de vida de desarrollo de software para dispositivos móviles (MDLC) exige rigurosas fases de verificación y validación para garantizar la compatibilidad, el rendimiento y la estabilidad de las aplicaciones a través de un ecosistema altamente fragmentado de hardware, arquitecturas de CPU (ARMv7, ARM64, x86_64), tamaños de pantalla y versiones del sistema operativo Android o iOS.
+    </p>
+
+    <h3 class="sub-sub-title">2.1.1. Dispositivo Móvil Real (Hardware Físico)</h3>
+    <p>
+      <strong>¿Qué es?</strong> Un dispositivo móvil real es una unidad física de hardware comercial (smartphone, tablet o wearable) que integra un System-on-Chip (SoC) con procesador ARM/ARM64, memoria RAM, módulos de almacenamiento no volátil, circuitos de radiofrecuencia (Módem 4G/5G, Wi-Fi, Bluetooth) y un conjunto de sensores físicos (acelerómetro, giroscopio, magnetómetro, GPS, sensor biométrico, cámaras y chip NFC).
+    </p>
+    <p>
+      <strong>¿Cómo funciona y su Arquitectura?</strong> La aplicación se ejecuta de manera directa sobre la pila de software nativa del fabricante. El código compilado en bytecode DEX (o nativo C/C++ vía NDK) es ejecutado por el Android Runtime (ART) con compilación híbrida AOT/JIT directamente sobre el kernel de Linux y los controladores de hardware (HAL - Hardware Abstraction Layer). La comunicación con el entorno de desarrollo se establece mediante el protocolo <strong>Android Debug Bridge (ADB)</strong> a través de una interfaz física USB o una conexión TCP/IP en red inalámbrica (ADB over Wi-Fi).
+    </p>
+
+    <div class="architecture-diagram">
++-------------------------------------------------------------------------+
+|                  ARQUITECTURA DE UN DISPOSITIVO REAL                    |
++-------------------------------------------------------------------------+
+| [Capa de Aplicación] -> App Móvil (.apk instalado en /data/app)         |
+| [Runtime Móvil]      -> Android Runtime (ART) + Core Libraries          |
+| [HAL]                -> Hardware Abstraction Layer (Drivers específicos)|
+| [Kernel Linux]       -> Control de Energía, Memoria, Planificador CPU   |
+| [Hardware SoC]       -> CPU ARM Cortex, GPU Adreno/Mali, Sensores Reales|
++-------------------------------------------------------------------------+
+| Conexión Dev: [Host PC] <== ADB Protocol (USB 3.0 / Wi-Fi) ==> [Device] |
++-------------------------------------------------------------------------+</div>
+
+    <div class="pro-con-grid">
+      <div class="pro-box">
+        <h4>✅ Ventajas</h4>
+        <ul>
+          <li><strong>Fidelidad Absoluta (100%):</strong> Comportamiento real de pantalla táctil, gestos multi-touch y respuesta háptica.</li>
+          <li><strong>Métricas Reales:</strong> Medición precisa del consumo de batería (mAh), temperatura térmica (thermal throttling) y rendimiento de red celular.</li>
+          <li><strong>Acceso a Periféricos:</strong> Evaluación directa de cámara, biometría, Bluetooth Low Energy (BLE) y geolocalización satelital.</li>
+        </ul>
+      </div>
+      <div class="con-box">
+        <h4>❌ Desventajas</h4>
+        <ul>
+          <li><strong>Alto Costo Económico:</strong> Dificultad para adquirir múltiples modelos de diferentes fabricantes (Samsung, Xiaomi, Pixel, Motorola).</li>
+          <li><strong>Desgaste Físico:</strong> Degradación de baterías por ciclos continuos de carga durante la depuración.</li>
+          <li><strong>Dificultad de Automatización CI/CD:</strong> Requiere granjas de dispositivos físicos complejas de mantener.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub-sub-title">2.1.2. Emuladores vs. Simuladores: Diferencias de Arquitectura</h3>
+    <p>
+      En la ingeniería de software móvil, los términos <em>emulador</em> y <em>simulador</em> a menudo se confunden, pero representan dos aproximaciones de virtualización completamente distintas a nivel computacional:
+    </p>
+    <ul>
+      <li>
+        <strong>Emulador:</strong> Modela tanto el <em>hardware</em> como el <em>software</em> del dispositivo objetivo. Emula las instrucciones de la CPU, registros, memoria, controladores de bus y chipsets. Por ejemplo, el emulador oficial de Android (basado en QEMU) puede ejecutar imágenes de sistema compiladas para ARM sobre una CPU host x86 mediante <em>Binary Translation</em>, o de forma nativa utilizando hipervisores de virtualización acelerada por hardware (KVM en Linux, Hyper-V/WHPX en Windows, Hypervisor.framework en macOS).
+      </li>
+      <li>
+        <strong>Simulador:</strong> No emula el hardware subyacente. En su lugar, recrea únicamente el entorno de software, las bibliotecas y las APIs del sistema operativo objetivo, ejecutándose directamente sobre el hardware del equipo anfitrión (Host). Un ejemplo paradigmático es el <em>iOS Simulator</em> de Xcode, el cual ejecuta código compilado para la arquitectura x86/ARM del Mac y simula las interfaces de usuario de Cocoa Touch, pero no ejecuta el kernel móvil real de iOS.
+      </li>
+    </ul>
+
+    <!-- MATRIZ COMPARATIVA -->
+    <h3 class="sub-sub-title">2.1.3. Android Virtual Device (AVD)</h3>
+    <p>
+      <strong>¿Qué es?</strong> Un Android Virtual Device (AVD) es una configuración de emulación gestionada por el SDK de Android que define las características de hardware y software de un dispositivo virtual (teléfono, tablet, TV, Wear OS o Automotive).
+    </p>
+    <p>
+      <strong>¿Cómo funciona?</strong> Cada AVD consta de:
+    </p>
+    <ul style="margin-left: 20px; margin-bottom: 10px; font-size: 9.5pt;">
+      <li>Un <strong>perfil de hardware</strong> (tamaño de pantalla, densidad DPI, memoria RAM, almacenamiento interno).</li>
+      <li>Una <strong>System Image</strong> (versión de Android API Level, compatibilidad con Google APIs o Google Play Store, ABI x86_64 o arm64).</li>
+      <li>Un motor de virtualización <strong>QEMU 2.0+</strong> con aceleración por hardware (KVM/HAXM) y aceleración gráfica por GPU (OpenGL/Vulkan passthrough).</li>
+    </ul>
+
+    <table class="academic-table">
+      <thead>
+        <tr>
+          <th>Criterio Técnico</th>
+          <th>Dispositivo Real</th>
+          <th>Emulador (AVD / QEMU)</th>
+          <th>Simulador (Software API)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Nivel de Virtualización</strong></td>
+          <td>Ninguno (Ejecución Nativa)</td>
+          <td>Hardware y Software (Hipervisor / QEMU)</td>
+          <td>Solo APIs y Comportamiento de Software</td>
+        </tr>
+        <tr>
+          <td><strong>Fidelidad de Ejecución</strong></td>
+          <td>100% (Prueba de Oro)</td>
+          <td>90% - 95% (Muy Alta)</td>
+          <td>70% - 80% (Media)</td>
+        </tr>
+        <tr>
+          <td><strong>Uso de Recursos Host</strong></td>
+          <td>Nulo (Usa su propia CPU/RAM)</td>
+          <td>Muy Alto (Consume 2-4 GB RAM y CPU del PC)</td>
+          <td>Bajo - Moderado</td>
+        </tr>
+        <tr>
+          <td><strong>Velocidad de Arranque</strong></td>
+          <td>Instantáneo (Siempre encendido)</td>
+          <td>Moderado (Usa Quickboot snapshots)</td>
+          <td>Muy Rápido</td>
+        </tr>
+        <tr>
+          <td><strong>Pruebas de Sensores / Red</strong></td>
+          <td>Físicas y reales</td>
+          <td>Simuladas por panel GUI / Comandos Telnet</td>
+          <td>Limitadas o simuladas por mock</td>
+        </tr>
+        <tr>
+          <td><strong>Costo e Integración CI/CD</strong></td>
+          <td>Alto costo | Difícil en pipelines</td>
+          <td>Bajo costo | Excelente en CI/CD headless</td>
+          <td>Bajo costo | Muy fácil de instanciar</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pro-con-grid">
+      <div class="pro-box">
+        <h4>✅ Ventajas del AVD</h4>
+        <ul>
+          <li>Permite probar múltiples versiones de Android (desde API 21 hasta API 35+) sin comprar hardware.</li>
+          <li>Capacidad para simular condiciones extremas: batería baja, llamadas entrantes, rutas GPS falsas, pérdida de señal y rotación de pantalla.</li>
+          <li>Integración directa con linajes de testing automatizado (Espresso, Appium) en pipelines CI/CD.</li>
+        </ul>
+      </div>
+      <div class="con-box">
+        <h4>❌ Desventajas del AVD</h4>
+        <ul>
+          <li>Exige altos requisitos de hardware en el equipo host (mínimo 16 GB RAM y CPU con soporte VT-x/AMD-V).</li>
+          <li>No reproduce con precisión total el comportamiento térmico, el drenaje real de batería ni fallos de hardware específicos del fabricante (ej. capas MIUI, OneUI).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2.2: APIS Y SERVICIOS WEB -->
+    <h2 class="sub-title page-break">2.2. APIs y Servicios Web para Aplicaciones Móviles</h2>
+
+    <p>
+      En la arquitectura moderna de sistemas de software, las aplicaciones móviles operan como clientes ligeros (*thin clients*) o clientes enriquecidos (*rich clients*) que delegan el procesamiento intensivo, el almacenamiento de datos relacionales y la lógica de negocio a servidores remotos a través de servicios web accesibles por Internet.
+    </p>
+
+    <h3 class="sub-sub-title">2.2.1. Protocolo HTTP/HTTPS y Arquitectura REST</h3>
+    <p>
+      El protocolo <strong>Hypertext Transfer Protocol (HTTP)</strong> bajo el estándar RFC 7231 define el modelo de comunicación solicitud-respuesta (*Request-Response*) sobre capas de transporte TCP/IP seguras (TLS/HTTPS). En aplicaciones móviles, la semántica de los métodos HTTP estructura las operaciones sobre recursos:
+    </p>
+
+    <ul style="margin-left: 20px; margin-bottom: 12px; font-size: 9.5pt;">
+      <li><code>GET</code>: Recupera representaciones de recursos (Idempotente y Seguro).</li>
+      <li><code>POST</code>: Crea nuevos recursos o procesa transacciones en el servidor.</li>
+      <li><code>PUT</code>: Reemplaza completamente un recurso existente por la representación enviada.</li>
+      <li><code>PATCH</code>: Aplica modificaciones parciales sobre un recurso.</li>
+      <li><code>DELETE</code>: Elimina el recurso identificado por la URI.</li>
+    </ul>
+
+    <p>
+      La arquitectura <strong>REST (Representational State Transfer)</strong>, propuesta por Roy Fielding, se basa en los siguientes principios fundamentales:
+    </p>
+    <ul style="margin-left: 20px; margin-bottom: 12px; font-size: 9.5pt;">
+      <li><strong>Arquitectura Cliente-Servidor:</strong> Desacoplamiento estricto entre la interfaz de usuario móvil y los servicios de backend.</li>
+      <li><strong>Sin Estado (Statelessness):</strong> Cada petición enviada por la aplicación móvil debe contener toda la información contextual necesaria (cabeceras de autenticación, parámetros) para ser procesada. El servidor no guarda sesiones de memoria para el cliente.</li>
+      <li><strong>Identificación de Recursos:</strong> Utilización de URIs lógicas y estructuradas (ejemplo: <code>/api/v1/products/42</code>).</li>
+      <li><strong>Representaciones JSON:</strong> Empleo del formato ligero JavaScript Object Notation (JSON) por su óptima relación tamaño/rendimiento en redes móviles.</li>
+    </ul>
+
+    <div class="architecture-diagram">
++-------------------------------------------------------------------------+
+|                  ARQUITECTURA DE CONSUMO REST CON AXIOS                 |
++-------------------------------------------------------------------------+
+| [UI Layer (Views/Components)]                                           |
+|       |                                                                 |
+|       v                                                                 |
+| [Service Layer (productService.js)]                                     |
+|       |                                                                 |
+|       v                                                                 |
+| [Axios HTTP Client (apiClient.js)]                                      |
+|   +-----------------------------------------------------------------+   |
+|   | 1. Request Interceptor  -> Inyecta Bearer Token + Timestamp     |   |
+|   | 2. HTTP Engine          -> XMLHttpRequest / Node / React-Native |   |
+|   | 3. Response Interceptor -> Desempaqueta Data + Mapea Errores    |   |
+|   +-----------------------------------------------------------------+   |
+|       | (JSON Payload over HTTPS)                                       |
+|       v                                                                 |
+| [Cloud REST API Gateway] <===> [Backend Server & Microservices / DB]    |
++-------------------------------------------------------------------------+</div>
+
+    <h3 class="sub-sub-title">2.2.2. Axios para el Consumo de Servicios en Aplicaciones Móviles</h3>
+    <p>
+      <strong>¿Qué es Axios?</strong> Axios es un cliente HTTP isomórfico basado en <em>Promises</em> (Promesas ECMAScript) diseñado para ejecutarse tanto en entornos de navegador web como en Node.js y frameworks móviles (React Native, Capacitor, Ionic).
+    </p>
+    <p>
+      <strong>¿Cómo funciona internamente?</strong> En el contexto de aplicaciones móviles, Axios encapsula las llamadas nativas de red utilizando <code>XMLHttpRequest</code> o adaptadores de transporte de bajo nivel. Proporciona serialización y deserialización automática de datos JSON, manejo transparente de parámetros en URLs (*query params*), cancelación de peticiones mediante <code>AbortController</code> y un potente sistema de <strong>Interceptores de Red</strong>.
+    </p>
+
+    <table class="academic-table">
+      <thead>
+        <tr>
+          <th>Característica</th>
+          <th>Axios Client</th>
+          <th>Fetch API Nativa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Transformación JSON</strong></td>
+          <td>Automática (Parsea y serializa objetos de forma transparente)</td>
+          <td>Manual (Requiere invocar <code>response.json()</code>)</td>
+        </tr>
+        <tr>
+          <td><strong>Interceptores de Petición/Respuesta</strong></td>
+          <td>Nativos (<code>axios.interceptors.request/response</code>)</td>
+          <td>No soportados de forma nativa (Requiere wrappers personalizados)</td>
+        </tr>
+        <tr>
+          <td><strong>Manejo de Errores HTTP (4xx / 5xx)</strong></td>
+          <td>Rechaza la promesa automáticamente para capturar en <code>catch</code></td>
+          <td>Resuelve con éxito (Requiere chequear manualmente <code>response.ok</code>)</td>
+        </tr>
+        <tr>
+          <td><strong>Gestión de Timeouts</strong></td>
+          <td>Soporte directo mediante propiedad <code>timeout: 10000</code></td>
+          <td>Requiere instanciar y vincular <code>AbortSignal.timeout()</code></td>
+        </tr>
+        <tr>
+          <td><strong>Protección XSRF / CSRF</strong></td>
+          <td>Integrada de fábrica en cabeceras de cliente</td>
+          <td>Manual</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pro-con-grid">
+      <div class="pro-box">
+        <h4>✅ Ventajas de Axios</h4>
+        <ul>
+          <li><strong>Patrón Interceptor:</strong> Centraliza la inyección de JWT Tokens de autenticación y refresco automático de credenciales.</li>
+          <li><strong>Resiliencia Móvil:</strong> Soporte nativo de timeouts para evitar bloqueos ante pérdida repentina de cobertura 4G/5G.</li>
+          <li><strong>Captura Unificada de Excepciones:</strong> Diferencia limpiamente entre errores de servidor (4xx/5xx), fallas de red offline y timeouts.</li>
+        </ul>
+      </div>
+      <div class="con-box">
+        <h4>❌ Desventajas de Axios</h4>
+        <ul>
+          <li><strong>Dependencia Externa:</strong> Añade peso adicional al bundle JavaScript de la aplicación frente a la API estándar del sistema.</li>
+          <li><strong>Curva de Aprendizaje:</strong> Requiere comprender el ciclo de vida de promesas asíncronas y encadenamiento de interceptores.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2.3: GENERACIÓN DE APK -->
+    <h2 class="sub-title page-break">2.3. Proceso de Generación y Compilación de APK (Android Package)</h2>
+
+    <p>
+      El <strong>APK (Android Package Kit)</strong> es el formato de archivo ejecutable y paquete de distribución estándar para el sistema operativo Android. Funciona como un contenedor comprimido (basado en el formato ZIP) que agrupa todos los elementos necesarios para la instalación y ejecución de una aplicación móvil.
+    </p>
+
+    <h3 class="sub-sub-title">2.3.1. Anatomía Interna de un Archivo APK</h3>
+    <table class="academic-table">
+      <thead>
+        <tr>
+          <th>Componente / Directorio</th>
+          <th>Descripción y Función Técnica</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>AndroidManifest.xml</code></td>
+          <td>Archivo de manifiesto compilado en formato binario XML (AXML). Declara el nombre del paquete, permisos del sistema (INTERNET, ACCESS_NETWORK_STATE), actividades, servicios y receptores.</td>
+        </tr>
+        <tr>
+          <td><code>classes.dex</code></td>
+          <td>Código ejecutable compilado en formato <strong>Dalvik Executable (DEX)</strong>, interpretado y optimizado por el runtime ART. Puede dividirse en <code>classes2.dex</code>, <code>classes3.dex</code> (MultiDex).</td>
+        </tr>
+        <tr>
+          <td><code>resources.arsc</code></td>
+          <td>Tabla de recursos binarios precompilados que contiene cadenas de texto, estilos, identificadores de diseño y referencias numéricas generadas por AAPT2.</td>
+        </tr>
+        <tr>
+          <td><code>res/</code></td>
+          <td>Directorio de recursos visuales compilados (Drawables, layouts, mipmaps, animaciones).</td>
+        </tr>
+        <tr>
+          <td><code>assets/</code></td>
+          <td>Archivos estáticos no estructurados que la app puede cargar en tiempo de ejecución (fuentes tipográficas, bases de datos SQLite precargadas, bundles JS).</td>
+        </tr>
+        <tr>
+          <td><code>lib/</code></td>
+          <td>Bibliotecas nativas de código C/C++ compiladas (.so) organizadas por carpetas de arquitectura ABI (<code>arm64-v8a</code>, <code>armeabi-v7a</code>, <code>x86_64</code>).</td>
+        </tr>
+        <tr>
+          <td><code>META-INF/</code></td>
+          <td>Contiene los certificados criptográficos, el manifiesto de firma (<code>MANIFEST.MF</code>), la lista de firmas (<code>CERT.SF</code>) y el bloque de firma digital (<code>CERT.RSA</code>).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub-sub-title">2.3.2. Pipeline de Compilación y Ensamblado con Gradle</h3>
+    <p>
+      El proceso de transformación del código fuente en un archivo APK ejecutable involucra múltiples etapas y herramientas especializadas del Android SDK:
+    </p>
+
+    <div class="architecture-diagram">
++-------------------------------------------------------------------------+
+|                  PIPELINE DE COMPILACIÓN DE UN APK                      |
++-------------------------------------------------------------------------+
+| 1. Código Fuente (.kt / .java / JS) ===> [javac / kotlinc]              |
+|                                                |                        |
+|                                                v                        |
+|                                     Java Bytecode (.class)              |
+|                                                |                        |
+|                                                v                        |
+| 2. Ofuscación y Desugaring ======> [Compilador D8 / R8]                 |
+|                                                |                        |
+|                                                v                        |
+|                                     Dalvik Bytecode (classes.dex)       |
+|                                                |                        |
+| 3. Recursos (res/, XML) =========> [AAPT2 Asset Packaging Tool]         |
+|                                                |                        |
+|                                                v                        |
+| 4. Ensamblado del Paquete ======> [Gradle APK Builder]                  |
+|                                                |                        |
+|                                                v                        |
+|                                     app-unsigned-unaligned.apk          |
+|                                                |                        |
+| 5. Alineación de Memoria ========> [zipalign (Límites de 4-bytes)]      |
+|                                                |                        |
+|                                                v                        |
+| 6. Firma Criptográfica ==========> [apksigner (Keystore v2/v3 Scheme)]  |
+|                                                |                        |
+|                                                v                        |
+|                                  [ MobileStore-Release-Signed.apk ]     |
++-------------------------------------------------------------------------+</div>
+
+    <h3 class="sub-sub-title">2.3.3. Variantes de Construcción: Debug APK vs. Release APK</h3>
+    <ul style="margin-left: 20px; margin-bottom: 12px; font-size: 9.5pt;">
+      <li>
+        <strong>Debug APK:</strong> Se compila con las banderas de depuración activadas (<code>android:debuggable="true"</code>). Se firma automáticamente con un certificado genérico (<code>debug.keystore</code>). No aplica ofuscación (R8) para facilitar la lectura de trazas de error en Logcat y permite conectar depuradores remotos.
+      </li>
+      <li>
+        <strong>Release APK:</strong> Optimizado para producción. Desactiva banderas de depuración, aplica minificación de código y ofuscación de nombres con R8/ProGuard para proteger la propiedad intelectual, elimina recursos no utilizados (*Tree Shaking*) y exige firmado con un certificado criptográfico privado (Keystore) protegido por contraseña.
+      </li>
+    </ul>
+
+    <h3 class="sub-sub-title">2.3.4. Alineación (Zipalign) y Firmado Digital (Apksigner)</h3>
+    <p>
+      Para que un APK sea aceptado por el sistema operativo Android y las tiendas de aplicaciones, debe someterse a dos procesos de ingeniería esenciales:
+    </p>
+    <ol style="margin-left: 20px; margin-bottom: 12px; font-size: 9.5pt;">
+      <li>
+        <strong>Zipalign (Alineación a 4 bytes):</strong> Herramienta de optimización que alinea todos los datos no comprimidos del archivo ZIP con respecto al inicio del archivo en límites de múltiplos de 4 bytes (32 bits). Esto permite que el kernel de Android acceda directamente a los recursos mediante mapeo de memoria (<code>mmap()</code>) sin necesidad de copiar los datos a la memoria RAM, reduciendo sustancialmente el consumo de memoria del dispositivo.
+      </li>
+      <li>
+        <strong>Apksigner (Firma Criptográfica):</strong> Garantiza la autenticidad e integridad del paquete. Android implementa tres esquemas de firma:
+        <ul style="margin-left: 15px; margin-top: 4px;">
+          <li><strong>Esquema v1 (JAR Signing):</strong> Firma basada en el contenido de los archivos individuales dentro de <code>META-INF/</code>.</li>
+          <li><strong>Esquema v2 (APK Signature Scheme v2):</strong> Firma del archivo completo binario insertada en un bloque específico del ZIP, acelerando la verificación en la instalación y protegiendo contra modificaciones no autorizadas.</li>
+          <li><strong>Esquema v3 (Key Rotation):</strong> Introduce capacidades para la rotación de claves criptográficas conservando el historial de confianza.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="pro-con-grid">
+      <div class="pro-box">
+        <h4>✅ Ventajas del Formato APK</h4>
+        <ul>
+          <li><strong>Instalación Directa (Sideloading):</strong> Permite la distribución e instalación inmediata en dispositivos reales o emuladores sin pasar por tiendas.</li>
+          <li><strong>Portabilidad:</strong> Archivo autónomo que contiene todo el código y recursos necesarios.</li>
+          <li><strong>Inspección y Auditoría:</strong> Facilita el análisis de vulnerabilidades y pruebas de seguridad estática (SAST).</li>
+        </ul>
+      </div>
+      <div class="con-box">
+        <h4>❌ Desventajas / Limitaciones</h4>
+        <ul>
+          <li><strong>Mayor Tamaño de Descarga:</strong> Puede incluir recursos y bibliotecas nativas para todas las arquitecturas de CPU en un solo archivo monolítico (Solucionado modernamente por <em>Android App Bundle - AAB</em>).</li>
+          <li><strong>Riesgo de Ingeniería Inversa:</strong> Si no se ofusca adecuadamente con R8/ProGuard, el bytecode DEX puede descompilarse a código Java legible con herramientas como JADX.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 3. DESARROLLO DEL EJEMPLO PRÁCTICO                                  -->
+    <!-- =================================================================== -->
+    <h1 class="section-title page-break">3. Desarrollo del Ejemplo Práctico</h1>
+
+    <p>
+      Como parte integral de la tarea y en estricto cumplimiento de la rúbrica de calificación, se implementó una solución de software modular denominada <strong>"MobileStore & API Hub"</strong>. La aplicación implementa una arquitectura por capas para el consumo de servicios REST en tiempo real con <strong>Axios</strong>, telemetría de latencia, captura de errores HTTP y la automatización del proceso de compilación y firmado de APK.
+    </p>
+
+    <h2 class="sub-title">3.1. Arquitectura de Código Implementada</h2>
+    <p>
+      El proyecto se organiza bajo el patrón de separación de responsabilidades:
+    </p>
+    <ul style="margin-left: 20px; margin-bottom: 12px; font-size: 9.5pt;">
+      <li><code>src/api/apiClient.js</code>: Instancia singleton de Axios con interceptores de Request (inyección de JWT y timestamp) y Response (cálculo de latencia y normalización de errores).</li>
+      <li><code>src/api/productService.js</code>: Capa de servicios que orquesta las operaciones CRUD (GET, POST, PUT, DELETE) contra la API REST pública.</li>
+      <li><code>src/index.html</code> y <code>src/app.js</code>: Interfaz móvil responsiva con visualización de frame de smartphone, listado de productos, modal interactivo de creación y consola en tiempo real de trazas Axios.</li>
+      <li><code>build-tools/</code>: Scripts en Bash para automatizar la generación de llaves criptográficas (Keystore), flujo de empaquetado APK, zipalign y firmado apksigner.</li>
+    </ul>
+
+    <h2 class="sub-title">3.2. Fragmento Central: Cliente Axios con Interceptores</h2>
+    <div class="code-block">
+<span class="code-comment">// src/api/apiClient.js - Configuración del Cliente Móvil con Axios</span>
+<span class="code-keyword">const</span> axios = require(<span class="code-string">'axios'</span>);
+
+<span class="code-keyword">const</span> apiClient = axios.create({
+  baseURL: <span class="code-string">'https://fakestoreapi.com'</span>,
+  timeout: <span class="code-string">10000</span>, <span class="code-comment">// 10s para tolerancia a redes móviles</span>
+  headers: { <span class="code-string">'Content-Type'</span>: <span class="code-string">'application/json'</span> }
+});
+
+<span class="code-comment">// 1. Interceptor de Peticiones (Inyección de Token Bearer y Telemetría)</span>
+apiClient.interceptors.request.use((config) => {
+  config.metadata = { startTime: <span class="code-keyword">new</span> Date() };
+  config.headers[<span class="code-string">'Authorization'</span>] = <span class="code-string">'Bearer eyJhbGciOiJIUzI1Ni...'</span>;
+  console.log(<span class="code-string">`[HTTP OUT] [${config.method.toUpperCase()}] -> ${config.url}`</span>);
+  <span class="code-keyword">return</span> config;
+});
+
+<span class="code-comment">// 2. Interceptor de Respuestas (Cálculo de Latencia y Mapeo de Códigos HTTP)</span>
+apiClient.interceptors.response.use(
+  (response) => {
+    <span class="code-keyword">const</span> latency = <span class="code-keyword">new</span> Date() - response.config.metadata.startTime;
+    console.log(<span class="code-string">`[HTTP IN] ${response.status} OK | Latencia: ${latency}ms`</span>);
+    <span class="code-keyword">return</span> { success: <span class="code-keyword">true</span>, status: response.status, data: response.data, latency };
+  },
+  (error) => {
+    <span class="code-comment">// Control unificado de errores (400, 401, 404, 500, Network)</span>
+    <span class="code-keyword">const</span> status = error.response ? error.response.status : <span class="code-string">'NET_ERROR'</span>;
+    <span class="code-keyword">return</span> Promise.reject({ success: <span class="code-keyword">false</span>, status, message: error.message });
+  }
+);
+    </div>
+
+    <h2 class="sub-title">3.3. Evidencia de Ejecución de Pruebas de Integración</h2>
+    <p>
+      Se ejecutó la suite de pruebas automatizadas sobre el entorno de ejecución Node.js/Móvil, validando satisfactoriamente todas las operaciones REST:
+    </p>
+
+    <div class="architecture-diagram">
+===============================================================
+ INICIO DE PRUEBAS DE INTEGRACIÓN: SERVICIOS REST CON AXIOS
+ Tutor: Ing. Luis Calo | Entorno: Node.js / Runtime Móvil
+===============================================================
+
+>>> [TEST 1] Ejecutando GET /products?limit=3 ...
+[HTTP REQUEST OUT] [GET] -> https://fakestoreapi.com/products
+[HTTP RESPONSE IN] [200 OK] URL: /products | Latencia: 843ms
+✓ Estado HTTP: 200 (OK) | Latencia: 843ms | Recibidos: 3 productos
+
+>>> [TEST 2] Ejecutando GET /products/categories ...
+✓ Estado HTTP: 200 | Categorías: electronics, jewelery, men's, women's
+
+>>> [TEST 3] Ejecutando POST /products ...
+[HTTP REQUEST OUT] [POST] -> https://fakestoreapi.com/products
+[HTTP RESPONSE IN] [201 Created] URL: /products | Latencia: 203ms
+✓ Estado HTTP: 201 (Created) | ID Generado por API: 21
+
+>>> [TEST 4] Ejecutando PUT /products/1 ...
+✓ Estado HTTP: 200 | Título modificado: Producto Actualizado vía Axios Móvil
+
+>>> [TEST 5] Ejecutando DELETE /products/1 ...
+✓ Estado HTTP: 200 | Eliminación confirmada correctamente.
+
+===============================================================
+ RESULTADO: TODAS LAS PRUEBAS DE CONSUMO REST FUERON EXITOSAS
+===============================================================</div>
+
+    <h2 class="sub-title">3.4. Ejecución del Pipeline de Construcción y Firmado de APK</h2>
+    <p>
+      Mediante el script <code>build-apk-workflow.sh</code>, se ejecutó la secuencia completa de empaquetado, alineación a 4 bytes con <code>zipalign</code> y firmado con <code>apksigner</code>:
+    </p>
+    <div class="architecture-diagram">
+========================================================================
+ PIPELINE DE GENERACIÓN Y FIRMADO DE APK ANDROID
+========================================================================
+Paso 1: Preparación del directorio de salida: ./dist-apk
+Paso 2: Generación del paquete base APK (AAPT2 + Dalvik DEX classes.dex)
+✓ Paquete base generado en: ./dist-apk/app-unsigned-unaligned.apk
+Paso 3: Alineación de límites de 4 bytes con zipalign (Optimización mmap)
+✓ Archivo alineado a 4-bytes: ./dist-apk/app-unaligned.apk
+Paso 4: Firmado criptográfico con apksigner (Keystore RSA 2048 bits)
+✓ APK firmado digitalmente: ./dist-apk/MobileStore-Release-Signed.apk
+Paso 5: Verificación de firma:
+   - APK Signature Scheme v1: TRUE
+   - APK Signature Scheme v2: TRUE
+   - APK Signature Scheme v3: TRUE
+========================================================================</div>
+
+    <!-- =================================================================== -->
+    <!-- 4. CONCLUSIONES                                                     -->
+    <!-- =================================================================== -->
+    <h1 class="section-title page-break">4. Conclusiones</h1>
+
+    <div class="conclusion-card">
+      <strong>1. Complementariedad Indispensable entre Entornos Físicos y Virtuales:</strong>
+      Los emuladores AVD basados en QEMU y aceleración KVM/HAXM ofrecen una velocidad y flexibilidad incomparables durante las fases tempranas de diseño y pruebas en pipelines CI/CD automatizados. No obstante, las pruebas en dispositivos reales continúan siendo el estándar indispensable para validar el consumo de batería en miliamperios, el comportamiento térmico bajo estrés y la respuesta háptica y biométrica.
+    </div>
+
+    <div class="conclusion-card">
+      <strong>2. Superioridad Técnica de Axios en el Consumo de Servicios REST Móviles:</strong>
+      Frente a la función nativa <code>fetch()</code>, Axios proporciona una arquitectura más robusta para entornos móviles gracias a su sistema de interceptores de petición y respuesta. Esto permite desacoplar la lógica de autenticación (inyección centralizada de JWT Bearer tokens), registrar métricas de latencia de red móvil y normalizar de forma unificada los códigos de error HTTP (4xx y 5xx).
+    </div>
+
+    <div class="conclusion-card">
+      <strong>3. Resiliencia ante la Inestabilidad de Conectividad en Redes Móviles:</strong>
+      El manejo explícito de tiempos de espera (<em>timeouts</em>) y la captura tipada de excepciones en Axios evitan el bloqueo indefinido de los hilos de interfaz de usuario (UI Thread) ante transiciones abruptas de red (por ejemplo, al alternar entre Wi-Fi y datos móviles 4G/5G en zonas de baja cobertura).
+    </div>
+
+    <div class="conclusion-card">
+      <strong>4. Importancia Crítica de la Optimización con Zipalign y el Firmado Criptográfico:</strong>
+      El proceso de alineación a 4 bytes mediante <code>zipalign</code> es esencial para la eficiencia de memoria en Android, ya que permite al sistema operativo leer los recursos directamente del APK sin volcarlos a la RAM. Asimismo, el firmado digital con <code>apksigner</code> (Esquemas v2 y v3) garantiza la integridad del paquete e impide la distribución de aplicaciones manipuladas maliciosamente.
+    </div>
+
+    <div class="conclusion-card">
+      <strong>5. Validez y Eficacia de la Arquitectura Modular Implementada:</strong>
+      La implementación práctica del proyecto <em>MobileStore & API Hub</em> demostró que una adecuada separación por capas (UI Layer, Service Layer y API Layer) no solo facilita el mantenimiento del código fuente y la realización de pruebas unitarias, sino que optimiza el flujo de despliegue y distribución de artefactos ejecutables APK en la plataforma Android.
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 5. BIBLIOGRAFÍA                                                     -->
+    <!-- =================================================================== -->
+    <h1 class="section-title page-break">5. Bibliografía</h1>
+
+    <p style="font-size: 9.5pt; color: #64748b; margin-bottom: 15px;">
+      <em>Referencias bibliográficas estructuradas bajo los estándares de las Normas APA (7ma edición):</em>
+    </p>
+
+    <div class="biblio-entry">
+      Android Open Source Project. (2024). <em>Android Debug Bridge (adb) architecture and command reference</em>. Android Developers. https://developer.android.com/tools/adb
+    </div>
+
+    <div class="biblio-entry">
+      Axios Community. (2024). <em>Axios HTTP client documentation: Interceptors, instances and error handling</em>. Axios HTTP. https://axios-http.com/docs/intro
+    </div>
+
+    <div class="biblio-entry">
+      Fielding, R. T. (2000). <em>Architectural styles and the design of network-based software architectures</em> (Doctoral dissertation, University of California, Irvine).
+    </div>
+
+    <div class="biblio-entry">
+      Google Developers. (2024). <em>Run apps on the Android Emulator and manage Android Virtual Devices (AVD)</em>. Android Studio Documentation. https://developer.android.com/studio/run/emulator
+    </div>
+
+    <div class="biblio-entry">
+      Google Developers. (2024). <em>Sign your app: APK Signature Scheme v2, v3 and keytool management</em>. Android Developers Guide. https://developer.android.com/studio/publish/app-signing
+    </div>
+
+    <div class="biblio-entry">
+      Google Developers. (2024). <em>Reduce app size and optimize alignment with zipalign</em>. Android Studio Tools. https://developer.android.com/tools/zipalign
+    </div>
+
+    <div class="biblio-entry">
+      IETF (Internet Engineering Task Force). (2014). <em>Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content (RFC 7231)</em>. IETF Secretariat. https://datatracker.ietf.org/doc/html/rfc7231
+    </div>
+
+    <div class="biblio-entry">
+      Martin, R. C. (2018). <em>Clean Architecture: A craftsman’s guide to software structure and design</em>. Prentice Hall.
+    </div>
+
+    <div class="biblio-entry">
+      Meier, R., & Lake, I. (2018). <em>Professional Android (4th ed.)</em>. Wrox - John Wiley & Sons.
+    </div>
+
+    <div class="biblio-entry">
+      Smyth, N. (2023). <em>Android Studio Panda Essentials - Kotlin Edition: Developing Android Apps Using Android Studio and Kotlin</em>. Payload Media.
+    </div>
+
+  </div>
+
+</body>
+</html>

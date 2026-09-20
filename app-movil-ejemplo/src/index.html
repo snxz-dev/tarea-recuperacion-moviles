@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MobileStore API Client - Axios Mobile Demo</title>
+  <link rel="stylesheet" href="styles/app.css">
+  <!-- Axios CDN for client-side mobile execution -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+  <div class="mobile-device-wrapper">
+    <!-- Physical Notch -->
+    <div class="device-notch">
+      <div class="device-camera"></div>
+      <div class="device-speaker"></div>
+    </div>
+
+    <div class="screen-container">
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span id="device-clock">09:41</span>
+        <div class="status-icons">
+          <span style="font-size: 10px;">5G</span>
+          <span>📶</span>
+          <span>🔋 98%</span>
+        </div>
+      </div>
+
+      <!-- App Header -->
+      <header class="app-header">
+        <div class="header-top">
+          <h1 class="brand-title">MobileStore App</h1>
+          <span class="academic-badge">Ing. Luis Calo</span>
+        </div>
+        <div class="telemetry-banner">
+          <div class="telemetry-item">
+            <div class="telemetry-dot" id="status-dot"></div>
+            <span id="api-status-text">API REST: Conectado</span>
+          </div>
+          <div class="telemetry-item">
+            <span>⚡ Latencia:</span>
+            <strong id="latency-text" style="color: #60a5fa;">0 ms</strong>
+          </div>
+        </div>
+      </header>
+
+      <!-- Category Filter Chips -->
+      <div class="categories-slider" id="categories-container">
+        <button class="cat-chip active" onclick="filterByCategory('all')">Todos</button>
+        <button class="cat-chip" onclick="filterByCategory('electronics')">Electrónica</button>
+        <button class="cat-chip" onclick="filterByCategory('jewelery')">Joyería</button>
+        <button class="cat-chip" onclick="filterByCategory(`men's clothing`)">Moda Hombre</button>
+        <button class="cat-chip" onclick="filterByCategory(`women's clothing`)">Moda Mujer</button>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="action-controls">
+        <button class="btn-primary" onclick="openCreateModal()">
+          <span>➕</span> Nuevo Producto (POST)
+        </button>
+        <button class="btn-secondary" onclick="loadProducts()" title="Recargar lista">
+          <span>🔄</span>
+        </button>
+        <button class="btn-secondary" onclick="simulateHttpError()" title="Probar Error 404 Interceptor">
+          <span>⚠️ 404</span>
+        </button>
+      </div>
+
+      <!-- Product List Feed -->
+      <div class="products-feed" id="products-list">
+        <div style="text-align: center; padding: 40px 10px; color: var(--text-muted);">
+          <p>Cargando productos vía Axios HTTP Client...</p>
+        </div>
+      </div>
+
+      <!-- Axios Request/Response Live Telemetry Logger -->
+      <div class="axios-logger-panel">
+        <div class="logger-header">
+          <span>CONSOLE AXIOS (HTTP TELEMETRY)</span>
+          <span style="font-size: 9px; color: #94a3b8;" id="logger-counter">0 requests</span>
+        </div>
+        <div id="logs-stream">
+          <div class="log-entry info">[INIT] Axios client listo con interceptores.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modal for Creating Product (POST) -->
+    <div class="modal-backdrop" id="create-modal">
+      <div class="modal-content">
+        <h3 style="margin-bottom: 14px; font-size: 16px;">Nuevo Producto (POST REST)</h3>
+        <form id="product-form" onsubmit="handleCreateProduct(event)">
+          <div class="form-group">
+            <label>Título del Producto</label>
+            <input type="text" id="p-title" class="form-control" placeholder="Ej: Smartphone Android AVD" required>
+          </div>
+          <div class="form-group">
+            <label>Precio ($USD)</label>
+            <input type="number" step="0.01" id="p-price" class="form-control" placeholder="Ej: 349.99" required>
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="p-category" class="form-control">
+              <option value="electronics">electronics</option>
+              <option value="jewelery">jewelery</option>
+              <option value="men's clothing">men's clothing</option>
+              <option value="women's clothing">women's clothing</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 10px; margin-top: 18px;">
+            <button type="button" class="btn-secondary" style="flex: 1;" onclick="closeCreateModal()">Cancelar</button>
+            <button type="submit" class="btn-primary" style="flex: 1;" id="btn-submit-post">Enviar POST</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
